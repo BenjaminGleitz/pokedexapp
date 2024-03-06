@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import DisplayAllPokemonsCard from '../../components/displayAllPokemons/displayAllPokemonsCard';
+import useGetOnePokemon from "../../services/getOnePokemon/useGetOnePokemon";
 
 export default function Home() {
 
@@ -8,10 +9,9 @@ export default function Home() {
 
     return (
         <ScrollView>
-        <View style={styles.container}>
-            <Text>Home</Text>
-            {pokemonData}
-        </View>
+            <View style={styles.container}>
+                {pokemonData}
+            </View>
         </ScrollView>
     );
 }

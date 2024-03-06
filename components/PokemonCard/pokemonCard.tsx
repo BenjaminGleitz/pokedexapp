@@ -1,17 +1,53 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 interface Pokemon {
+    id: number;
+    pokedexId: number;
     name: string;
     image: string;
+    sprite: string;
+    slug: string;
+    stats: {
+        HP: number;
+        attack: number;
+        defense: number;
+        special_attack: number;
+        special_defense: number;
+        speed: number;
+    };
     apiTypes: {
+        name: string;
         image: string;
     }[];
+    apiGeneration: number;
+    apiResistances: {
+        name: string;
+        damage_multiplier: number;
+        damage_relation: string;
+    }[];
+    apiEvolutions: {
+        name: string;
+        pokedexId: number;
+    }[];
+    apiPreEvolution: string | "none" | {
+        name: string;
+        pokedexIdd: number;
+    };
 }
-
 const PokemonCard: React.FC<{ pokemon: Pokemon }> = ({ pokemon }) => {
+    const navigation = useNavigation();
+
+    const handlePokemonPress = (pokemonId: number) => {
+        navigation.navigate('Show', { pokemonId });
+    }
+
     return (
-        <View style={styles.card}>
+        <TouchableOpacity
+            style={styles.card}
+            onPress={() => handlePokemonPress(pokemon.id)}
+        >
             <View style={styles.cardImage}>
                 <Image style={styles.pokemonImage} source={{ uri: pokemon.image }} />
             </View>
@@ -23,7 +59,7 @@ const PokemonCard: React.FC<{ pokemon: Pokemon }> = ({ pokemon }) => {
                     ))}
                 </View>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 };
 

@@ -3,13 +3,37 @@ import axios from 'axios';
 
 interface Pokemon {
     id: number;
+    pokedexId: number;
     name: string;
     image: string;
-    apiGeneration: number;
+    sprite: string;
+    slug: string;
+    stats: {
+        HP: number;
+        attack: number;
+        defense: number;
+        special_attack: number;
+        special_defense: number;
+        speed: number;
+    };
     apiTypes: {
         name: string;
         image: string;
     }[];
+    apiGeneration: number;
+    apiResistances: {
+        name: string;
+        damage_multiplier: number;
+        damage_relation: string;
+    }[];
+    apiEvolutions: {
+        name: string;
+        pokedexId: number;
+    }[];
+    apiPreEvolution: string | "none" | {
+        name: string;
+        pokedexIdd: number;
+    };
 }
 
 const useGetAllPokemons = () => {
@@ -18,7 +42,7 @@ const useGetAllPokemons = () => {
 
     const fetchPokemons = async () => {
         try {
-            const response = await axios.get('https://pokebuildapi.fr/api/v1/pokemon/limit/20');
+            const response = await axios.get('https://pokebuildapi.fr/api/v1/pokemon/limit/5');
             setPokemons(response.data);
         } catch (error) {
             console.log(error);

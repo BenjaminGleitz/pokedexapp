@@ -6,8 +6,6 @@ import PokemonCard from "../PokemonCard/pokemonCard";
 export default function DisplayAllPokemonsCard() {
     const { pokemons } = useGetAllPokemons();
 
-
-
     return (
 
         <View style={styles.container}>

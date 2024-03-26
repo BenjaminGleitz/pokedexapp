@@ -124,6 +124,7 @@ export default function Show() {
                     </View>
                 </View>
                 <View style={styles.statContainer}>
+                    <Text style={styles.stat}>id: {pokemon.id}</Text>
                     <Text style={styles.stat}>HP: {pokemon.stats.HP}</Text>
                     <Text style={styles.stat}>Attack: {pokemon.stats.attack}</Text>
                     <Text style={styles.stat}>Defense: {pokemon.stats.defense}</Text>
@@ -132,6 +133,7 @@ export default function Show() {
                     <Text style={styles.stat}>Speed: {pokemon.stats.speed}</Text>
                 </View>
                 <Button title={'Add on team'} onPress={() => addItemToAsyncStorage(pokemonId)}/>
+                <Button title={'Clear all data'} onPress={clearAllData}/>
 
             </View>
         </ScrollView>

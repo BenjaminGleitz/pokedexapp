@@ -14,7 +14,6 @@ export default function useAsyncStorage() {
             if (captured !== null) {
                 setCapturedPokemon(JSON.parse(captured));
             }
-            console.log('Captured Pokemon:', capturedPokemon)
         } catch (error) {
             console.error(error);
         }
@@ -25,8 +24,8 @@ export default function useAsyncStorage() {
             const updatedCapturedPokemon = [...capturedPokemon, pokemonId.toString()];
             await AsyncStorage.setItem('capturedPokemon', JSON.stringify(updatedCapturedPokemon));
             setCapturedPokemon(updatedCapturedPokemon);
-            getCapturedPokemon();
-            console.log('Pokemon captured!')
+            console.log('Pokemon captured:', pokemonId)
+            console.log('Captured Pokemon:', updatedCapturedPokemon)
         } catch (error) {
             console.error(error);
         }
@@ -35,21 +34,22 @@ export default function useAsyncStorage() {
     const removeItemFromAsyncStorage = async (key: string) => {
         try {
             await AsyncStorage.removeItem(key);
-            getCapturedPokemon();
+            getCapturedPokemon(); // Mettre à jour l'état local après la suppression
         } catch (error) {
             console.error(error);
         }
     };
 
-    // clear all data from async storage
+    // Clear all data from async storage
     const clearAllData = async () => {
         try {
             await AsyncStorage.clear();
-            getCapturedPokemon();
+            setCapturedPokemon([]); // Mettre à jour l'état local après la suppression
+            console.log('All data cleared', capturedPokemon);
         } catch (error) {
             console.error(error);
         }
     };
 
-    return { capturedPokemon, getCapturedPokemon, addItemToAsyncStorage, removeItemFromAsyncStorage, clearAllData };
+    return { capturedPokemon, addItemToAsyncStorage, removeItemFromAsyncStorage, clearAllData };
 }

@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import DisplayAllPokemonsCard from '../../components/displayAllPokemons/displayAllPokemonsCard';
-import useGetOnePokemon from "../../services/getOnePokemon/useGetOnePokemon";
 
 export default function Home() {
 

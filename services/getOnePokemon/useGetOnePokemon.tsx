@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 interface Pokemon {
@@ -36,37 +36,15 @@ interface Pokemon {
     };
 }
 
-const useGetOnePokemon = (pokemonId: number) => {
+const useGetPokemon = (pokemonId: number) => {
     const [pokemon, setPokemon] = useState<Pokemon | null>(null);
-    const [pokemonEvolution, setPokemonEvolution] = useState<Pokemon | null>(null);
-    const [evoliEvolutions, setEvoliEvolutions] = useState<Pokemon[] | null>(null);
-    const [pokemonPreEvolution, setPokemonPreEvolution] = useState<Pokemon | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchPokemonDetails = async () => {
+        const fetchPokemon = async () => {
             try {
                 const response = await axios.get(`https://pokebuildapi.fr/api/v1/pokemon/${pokemonId}`);
                 setPokemon(response.data);
-
-                const evolutionId = response.data.apiEvolutions[0]?.pokedexId;
-                const evoliEvolutionId = response.data.apiEvolutions.map((evolution: {
-                    pokedexId: number
-                }) => evolution.pokedexId);
-                const preEvolutionId = response.data.apiPreEvolution?.pokedexIdd;
-
-
-                if (evolutionId) {
-                    await fetchPokemonEvolution(evolutionId);
-                }
-
-                if (evoliEvolutionId) {
-                    await fetchEvoliEvolution(evoliEvolutionId);
-                }
-
-                if (preEvolutionId && preEvolutionId !== 'none') {
-                    await fetchPokemonPreEvolution(preEvolutionId);
-                }
             } catch (error) {
                 console.log(error);
             } finally {
@@ -74,45 +52,10 @@ const useGetOnePokemon = (pokemonId: number) => {
             }
         };
 
-        const fetchPokemonEvolution = async (evolutionId: number) => {
-            try {
-                const evolutionResponse = await axios.get(`https://pokebuildapi.fr/api/v1/pokemon/${evolutionId}`);
-                setPokemonEvolution(evolutionResponse.data);
-
-            } catch (error) {
-                console.log(error);
-            }
-        };
-
-        const fetchEvoliEvolution = async (evoliEvolutionId: number[]) => {
-            try {
-                const evolutionResponses = await Promise.all(
-                    evoliEvolutionId.map(async (evoliEvolution: number) => {
-                        return axios.get(`https://pokebuildapi.fr/api/v1/pokemon/${evoliEvolution}`);
-                    })
-                );
-
-                const evolutionsData: Pokemon[] = evolutionResponses.map(response => response.data);
-                setEvoliEvolutions(evolutionsData);
-            } catch (error) {
-                console.log(error);
-            }
-        }
-
-        const fetchPokemonPreEvolution = async (prevEvolutionId: number) => {
-            try {
-                const pokemonPreEvolution = await axios.get(`https://pokebuildapi.fr/api/v1/pokemon/${prevEvolutionId}`);
-                setPokemonPreEvolution(pokemonPreEvolution.data);
-
-            } catch (error) {
-                console.log(error);
-            }
-        };
-
-        fetchPokemonDetails();
+        fetchPokemon();
     }, [pokemonId]);
 
-    return {pokemon, pokemonEvolution, pokemonPreEvolution, loading, evoliEvolutions};
+    return { pokemon, loading };
 };
 
-export default useGetOnePokemon;
+export default useGetPokemon;

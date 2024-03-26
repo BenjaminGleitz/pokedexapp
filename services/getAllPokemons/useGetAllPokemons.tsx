@@ -42,7 +42,7 @@ const useGetAllPokemons = () => {
 
     const fetchPokemons = async () => {
         try {
-            const response = await axios.get('https://pokebuildapi.fr/api/v1/pokemon/limit/5');
+            const response = await axios.get('https://pokebuildapi.fr/api/v1/pokemon/limit/50');
             setPokemons(response.data);
         } catch (error) {
             console.log(error);

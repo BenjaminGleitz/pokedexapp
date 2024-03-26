@@ -37,26 +37,26 @@ interface Pokemon {
     };
 }
 const PokemonCard: React.FC<{ pokemon: Pokemon }> = ({ pokemon }) => {
+
     const navigation = useNavigation();
 
-    const handlePokemonPress = (pokemonId: number) => {
-        navigation.navigate('Show', { pokemonId });
-    }
+    const handlePress = () => {
+        navigation.navigate('Show', { pokemonId: pokemon.id });
+    };
 
     return (
-        <TouchableOpacity
-            style={styles.card}
-            onPress={() => handlePokemonPress(pokemon.id)}
-        >
-            <View style={styles.cardImage}>
-                <Image style={styles.pokemonImage} source={{ uri: pokemon.image }} />
-            </View>
-            <View style={styles.cardName}>
-                <Text style={styles.name}>{pokemon.name}</Text>
-                <View style={styles.cardTypes}>
-                    {pokemon.apiTypes.map((type, index) => (
-                        <Image key={index} style={styles.typeImage} source={{ uri: type.image }} />
-                    ))}
+        <TouchableOpacity onPress={handlePress}>
+            <View style={styles.card}>
+                <View style={styles.cardImage}>
+                    <Image style={styles.pokemonImage} source={{ uri: pokemon.image }} />
+                </View>
+                <View style={styles.cardName}>
+                    <Text style={styles.name}>{pokemon.name}</Text>
+                    <View style={styles.cardTypes}>
+                        {pokemon.apiTypes.map((type, index) => (
+                            <Image key={index} style={styles.typeImage} source={{ uri: type.image }} />
+                        ))}
+                    </View>
                 </View>
             </View>
         </TouchableOpacity>

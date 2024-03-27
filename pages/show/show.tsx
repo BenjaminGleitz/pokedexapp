@@ -1,4 +1,3 @@
-// show.tsx
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Button} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
@@ -101,6 +100,8 @@ export default function Show() {
                     ))}
                 </View>
             </View>
+            <Button title={'Add on team'} onPress={() => addItemToAsyncStorage(pokemonId)}/>
+            <Button title={'Clear all data'} onPress={clearAllData}/>
             <View style={styles.container}>
                 <View style={styles.pokemonsList}>
                     <View style={styles.mainPokemon}>
@@ -132,8 +133,6 @@ export default function Show() {
                     <Text style={styles.stat}>Special Defense: {pokemon.stats.special_defense}</Text>
                     <Text style={styles.stat}>Speed: {pokemon.stats.speed}</Text>
                 </View>
-                <Button title={'Add on team'} onPress={() => addItemToAsyncStorage(pokemonId)}/>
-                <Button title={'Clear all data'} onPress={clearAllData}/>
 
             </View>
         </ScrollView>

@@ -11,6 +11,7 @@ export default function useAsyncStorage() {
     const getCapturedPokemon = async () => {
         try {
             const captured = await AsyncStorage.getItem('capturedPokemon');
+            console.log(captured)
             if (captured !== null) {
                 setCapturedPokemon(JSON.parse(captured));
             }
@@ -21,35 +22,35 @@ export default function useAsyncStorage() {
 
     const addItemToAsyncStorage = async (pokemonId: number) => {
         try {
-            const updatedCapturedPokemon = [...capturedPokemon, pokemonId.toString()];
+            const isPokemonCaptured = capturedPokemon.includes(pokemonId.toString());
+            let updatedCapturedPokemon: string[];
+            if (isPokemonCaptured) {
+                updatedCapturedPokemon = capturedPokemon.filter(id => id !== pokemonId.toString());
+                console.log('je libère le pokemon' + pokemonId.toString(), updatedCapturedPokemon);
+            } else {
+                updatedCapturedPokemon = [...capturedPokemon, pokemonId.toString()];
+                console.log('je capture le pokemon' + pokemonId.toString(), updatedCapturedPokemon);
+            }
             await AsyncStorage.setItem('capturedPokemon', JSON.stringify(updatedCapturedPokemon));
             setCapturedPokemon(updatedCapturedPokemon);
-            console.log('Pokemon captured:', pokemonId)
-            console.log('Captured Pokemon:', updatedCapturedPokemon)
         } catch (error) {
             console.error(error);
         }
     };
 
-    const removeItemFromAsyncStorage = async (key: string) => {
-        try {
-            await AsyncStorage.removeItem(key);
-            getCapturedPokemon(); // Mettre à jour l'état local après la suppression
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    // Clear all data from async storage
     const clearAllData = async () => {
+        if (capturedPokemon.length === 0) {
+            console.log('il n\'y a pas de pokemons capturés')
+            return;
+        }
         try {
             await AsyncStorage.clear();
-            setCapturedPokemon([]); // Mettre à jour l'état local après la suppression
-            console.log('All data cleared', capturedPokemon);
+            setCapturedPokemon([]);
+            console.log('je clear tout les pokemons capturés', capturedPokemon)
         } catch (error) {
             console.error(error);
         }
     };
 
-    return { capturedPokemon, addItemToAsyncStorage, removeItemFromAsyncStorage, clearAllData };
+    return { capturedPokemon, addItemToAsyncStorage, clearAllData, getCapturedPokemon};
 }

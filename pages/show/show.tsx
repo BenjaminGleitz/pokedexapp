@@ -6,7 +6,7 @@ import useGetOnePokemonEvolutions from "../../services/getOnePokemonEvolutions/u
 import useGetOnePokemonPreEvolutions from "../../services/getOnePokemonPreEvolutions/useGetOnePokemonPreEvolutions";
 import useAsyncStorage from "../../services/asyncStorage/useAsyncStorage";
 
-type Evolution = {
+interface Evolution {
     id: number;
     name: string;
     image: string;
@@ -102,6 +102,9 @@ export default function Show() {
             </View>
             <Button title={'Add on team'} onPress={() => addItemToAsyncStorage(pokemonId)}/>
             <Button title={'Clear all data'} onPress={clearAllData}/>
+            {pokemon.apiEvolutions.length > 0 && (
+                <Button title={'Go to Team'} onPress={() => navigation.navigate('Evolution', { pokemonId: pokemonId })} />
+            )}
             <View style={styles.container}>
                 <View style={styles.pokemonsList}>
                     <View style={styles.mainPokemon}>

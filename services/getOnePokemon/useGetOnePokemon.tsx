@@ -45,6 +45,7 @@ const useGetPokemon = (pokemonId: number) => {
             try {
                 const response = await axios.get(`https://pokebuildapi.fr/api/v1/pokemon/${pokemonId}`);
                 setPokemon(response.data);
+                console.log(response.data);
             } catch (error) {
                 console.log(error);
             } finally {

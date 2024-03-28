@@ -1,8 +1,8 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {View, StyleSheet, Image, Text, Animated} from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { View, StyleSheet, Image, Text, Animated, Vibration } from 'react-native';
 import useGetPokemon from '../../services/getOnePokemon/useGetOnePokemon';
-import {useRoute} from "@react-navigation/native";
-import {Accelerometer} from "expo-sensors";
+import { useRoute } from "@react-navigation/native";
+import { Accelerometer } from "expo-sensors";
 
 interface EvolutionProps {
     pokemonId: number;
@@ -45,8 +45,8 @@ interface Pokemon {
 
 export default function Evolution() {
     const route = useRoute();
-    const {pokemonId} = route.params as EvolutionProps;
-    const {pokemon, loading} = useGetPokemon(pokemonId);
+    const { pokemonId } = route.params as EvolutionProps;
+    const { pokemon, loading } = useGetPokemon(pokemonId);
     const [shakeDetected, setShakeDetected] = useState(false);
     const pokemonEvolution = useGetPokemon(pokemon?.apiEvolutions[0].pokedexId || 0);
 
@@ -60,24 +60,24 @@ export default function Evolution() {
             if (!shakeDetected) {
                 console.log('Shake detected!');
                 setShakeDetected(true);
-                Animated.sequence([
-                    Animated.timing(opacityCurrentPokemon, {
-                        toValue: 0,
-                        duration: 1000,
-                        useNativeDriver: true,
-                    }),
+                Animated.timing(opacityCurrentPokemon, {
+                    toValue: 0,
+                    duration: 1000,
+                    useNativeDriver: true,
+                }).start(() => {
+                    Vibration.vibrate();
                     Animated.timing(opacityEvolutionPokemon, {
                         toValue: 1,
                         duration: 1000,
                         useNativeDriver: true,
-                    })
-                ]).start(() => {
-                    setShakeDetected(false);
+                    }).start(() => {
+                        setShakeDetected(false);
+                    });
                 });
             }
         };
 
-        subscription = Accelerometer.addListener(({x, y, z}) => {
+        subscription = Accelerometer.addListener(({ x, y, z }) => {
             const acceleration = Math.sqrt(x * x + y * y + z * z);
             if (acceleration > 3) {
                 handleShake();
@@ -100,12 +100,12 @@ export default function Evolution() {
     return (
         <View style={styles.container}>
             <Animated.Image
-                style={[styles.image, {opacity: opacityCurrentPokemon}]}
-                source={{uri: pokemon.image}}
+                style={[styles.image, { opacity: opacityCurrentPokemon }]}
+                source={{ uri: pokemon.image }}
             />
             <Animated.Image
-                style={[styles.imageEvolution, {opacity: opacityEvolutionPokemon}]}
-                source={{uri: pokemonEvolution.pokemon.image}}
+                style={[styles.imageEvolution, { opacity: opacityEvolutionPokemon }]}
+                source={{ uri: pokemonEvolution.pokemon.image }}
             />
         </View>
     );
@@ -137,5 +137,3 @@ const styles = StyleSheet.create({
         marginTop: -200,
     },
 });
-
-

@@ -29,7 +29,6 @@ export default function Show() {
     const params = route.params;
     const pokemonId = params && typeof params === 'object' && 'pokemonId' in params && typeof params.pokemonId === 'number' ? params.pokemonId : null;
     const {addItemToAsyncStorage, clearAllData} = useAsyncStorage();
-
     const navigation = useNavigation();
 
     const handlePress = (evolutionId: number) => {
@@ -100,11 +99,15 @@ export default function Show() {
                     ))}
                 </View>
             </View>
-            <Button title={'Add on team'} onPress={() => addItemToAsyncStorage(pokemonId)}/>
-            <Button title={'Clear all data'} onPress={clearAllData}/>
-            {pokemon.apiEvolutions.length > 0 && (
-                <Button title={'Go to Team'} onPress={() => navigation.navigate('Evolution', { pokemonId: pokemonId })} />
-            )}
+            <View style={styles.button}>
+                <Button title={'Add on team'} onPress={() => addItemToAsyncStorage(pokemonId)}/>
+                <Button title={'Clear all data'} onPress={clearAllData}/>
+                {pokemon.apiEvolutions.length > 0 && (
+                    <Button title={'Evolution !'}
+                            onPress={() => navigation.navigate('Evolution', {pokemonId: pokemonId})}
+                    />
+                )}
+            </View>
             <View style={styles.container}>
                 <View style={styles.pokemonsList}>
                     <View style={styles.mainPokemon}>
@@ -128,7 +131,6 @@ export default function Show() {
                     </View>
                 </View>
                 <View style={styles.statContainer}>
-                    <Text style={styles.stat}>id: {pokemon.id}</Text>
                     <Text style={styles.stat}>HP: {pokemon.stats.HP}</Text>
                     <Text style={styles.stat}>Attack: {pokemon.stats.attack}</Text>
                     <Text style={styles.stat}>Defense: {pokemon.stats.defense}</Text>
@@ -174,11 +176,16 @@ const styles = StyleSheet.create({
         height: 100,
     },
     pokemonsList: {
-        width: '100%',
+        backgroundColor: '#FFC562',
+        borderRadius: 10,
+        width: '90%',
         display: 'flex',
         flexDirection: 'row',
         marginTop: 30,
         marginBottom: 30,
+        borderStyle: 'solid',
+        borderColor: 'black',
+        borderWidth: 3,
     },
     mainPokemon: {
         width: '60%',
@@ -204,10 +211,22 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: '#FFC562',
+        borderRadius: 10,
+        width: '90%',
+        borderStyle: 'solid',
+        borderColor: 'black',
+        borderWidth: 3,
     },
     stat: {
-        fontSize: 30,
+        fontSize: 20,
         margin: 5,
         fontWeight: 'bold',
+    },
+    button: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        margin: 10,
     },
 });

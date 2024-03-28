@@ -66,9 +66,12 @@ const PokemonCard: React.FC<{ pokemon: Pokemon }> = ({ pokemon }) => {
 const styles = StyleSheet.create({
     card: {
         flexDirection: 'row',
+        borderStyle: 'solid',
+        borderColor: 'black',
+        borderWidth: 3,
         width: '100%',
         justifyContent: 'space-around',
-        backgroundColor: '#f5f5f5',
+        backgroundColor: '#FFC562',
         margin: 10,
         padding: 10,
         borderRadius: 10,
@@ -77,14 +80,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     pokemonImage: {
-        width: 110,
-        height: 110,
+        width: 130,
+        height: 130,
     },
     cardName: {
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
     },
     name: {
-        fontSize: 20,
+        fontSize: 25,
         fontWeight: 'bold',
     },
     cardTypes: {
@@ -92,8 +95,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     typeImage: {
-        width: 30,
-        height: 30,
+        width: 50,
+        height: 50,
     }
 });
 

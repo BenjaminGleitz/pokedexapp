@@ -2,7 +2,6 @@ import React from 'react';
 import {View, Text, StyleSheet, ScrollView, Button} from 'react-native';
 import DisplayAllPokemonsCard from '../../components/displayAllPokemons/displayAllPokemonsCard';
 import {useNavigation} from "@react-navigation/native";
-
 export default function Home() {
 
     const pokemonData = DisplayAllPokemonsCard();
@@ -15,8 +14,8 @@ export default function Home() {
 
     return (
         <ScrollView>
-            <Button title="My Team" onPress={() => handlePress()}/>
             <View style={styles.container}>
+                <Button title="My Team" onPress={() => handlePress()}/>
                 {pokemonData}
             </View>
         </ScrollView>

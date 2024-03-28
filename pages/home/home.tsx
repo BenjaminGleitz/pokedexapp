@@ -12,10 +12,15 @@ export default function Home() {
         navigation.navigate('Team')
     };
 
+    const handlePressSearch = () => {
+        navigation.navigate('Search')
+    }
+
     return (
         <ScrollView>
             <View style={styles.container}>
                 <Button title="My Team" onPress={() => handlePress()}/>
+                <Button title="Search" onPress={() => handlePressSearch()}/>
                 {pokemonData}
             </View>
         </ScrollView>

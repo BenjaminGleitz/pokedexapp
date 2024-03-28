@@ -5,6 +5,7 @@ import useGetPokemon from '../../services/getOnePokemon/useGetOnePokemon';
 import useGetOnePokemonEvolutions from "../../services/getOnePokemonEvolutions/useGetOnePokemonEvolutions";
 import useGetOnePokemonPreEvolutions from "../../services/getOnePokemonPreEvolutions/useGetOnePokemonPreEvolutions";
 import useAsyncStorage from "../../services/asyncStorage/useAsyncStorage";
+import * as Speech from 'expo-speech';
 
 interface Evolution {
     id: number;
@@ -58,6 +59,15 @@ export default function Show() {
         };
 
         fetchPokemonEvolutions();
+    }, [pokemon]);
+
+    useEffect(() => {
+        if (pokemon) {
+            Speech.speak(pokemon.name, {
+                voice: 'com.apple.eloquence.en-GB.Rocko',
+                onDone: () => console.log('Lecture terminée')
+            });
+        }
     }, [pokemon]);
 
     useEffect(() => {

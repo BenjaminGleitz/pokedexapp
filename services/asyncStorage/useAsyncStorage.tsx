@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function useAsyncStorage() {
@@ -11,7 +11,6 @@ export default function useAsyncStorage() {
     const getCapturedPokemon = async () => {
         try {
             const captured = await AsyncStorage.getItem('capturedPokemon');
-            console.log(captured)
             if (captured !== null) {
                 setCapturedPokemon(JSON.parse(captured));
             }
@@ -20,7 +19,7 @@ export default function useAsyncStorage() {
         }
     };
 
-    const addItemToAsyncStorage = async (pokemonId: number) => {
+    const addItemToAsyncStorage =useCallback ( async (pokemonId: number) => {
         try {
             const isPokemonCaptured = capturedPokemon.includes(pokemonId.toString());
             let updatedCapturedPokemon: string[];
@@ -36,21 +35,36 @@ export default function useAsyncStorage() {
         } catch (error) {
             console.error(error);
         }
-    };
+    } , [capturedPokemon])
 
     const clearAllData = async () => {
         if (capturedPokemon.length === 0) {
-            console.log('il n\'y a pas de pokemons capturés')
+            console.log('il n\'y a pas de pokemons capturés');
             return;
         }
         try {
             await AsyncStorage.clear();
             setCapturedPokemon([]);
-            console.log('je clear tout les pokemons capturés', capturedPokemon)
+            console.log('je clear tout les pokemons capturés', capturedPokemon);
         } catch (error) {
             console.error(error);
+        } finally {
+            getCapturedPokemon(); // Mettre à jour l'état local après avoir tout effacé
         }
     };
 
-    return { capturedPokemon, addItemToAsyncStorage, clearAllData, getCapturedPokemon};
+    const clearOneData = useCallback(async (pokemonId: number) => {
+        try {
+            const updatedCapturedPokemon = capturedPokemon.filter(id => id !== pokemonId.toString());
+            await AsyncStorage.setItem('capturedPokemon', JSON.stringify(updatedCapturedPokemon));
+            setCapturedPokemon(updatedCapturedPokemon);
+        } catch (error) {
+            console.error(error);
+        }
+        finally {
+            getCapturedPokemon();
+        }
+    }, [capturedPokemon]);
+
+    return { capturedPokemon, addItemToAsyncStorage, clearAllData, clearOneData, getCapturedPokemon };
 }
